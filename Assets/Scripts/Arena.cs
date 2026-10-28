@@ -109,5 +109,4 @@ public class Arena : MonoBehaviour
             Debug.Log("Ничья");
         }
     }
-
 }
