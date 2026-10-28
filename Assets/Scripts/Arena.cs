@@ -4,10 +4,6 @@ public class Arena : MonoBehaviour
 {
     [SerializeField] private HeroClass heroClass = HeroClass.Warrior;
     [SerializeField, Min(1)] private int roundLimit = 10;
-    
-    [Header("Damage Calculators")]
-    [SerializeField] private DamageCalculator heroDamageCalculator;
-    [SerializeField] private DamageCalculator enemyDamageCalculator;
     public enum HeroClass
     {
         Warrior,
@@ -78,8 +74,7 @@ public class Arena : MonoBehaviour
             enemy.TakeDamage(heroAttack.Damage);
 
             string roundLog =
-                $"Раунд {round}: {hero.UnitName} наносит {heroAttack.Damage} урона " +
-                $"({heroAttack.ElementModifier}, {heroAttack.CriticalModifier}), " +
+                $"Раунд {round}: {hero.UnitName} наносит {heroDamage} Урона, " +
                 $"у противника {enemy.Health} HP";
 
             
@@ -116,5 +111,4 @@ public class Arena : MonoBehaviour
             Debug.Log("Ничья");
         }
     }
-
 }
