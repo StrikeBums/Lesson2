@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Arena : MonoBehaviour
 {
+    [SerializeField] private HeroClass heroClass = HeroClass.Warrior;
+    [SerializeField, Min(1)] private int roundLimit = 10;
     public enum HeroClass
     {
         Warrior,
@@ -14,8 +16,6 @@ public class Arena : MonoBehaviour
         Troll,
         Orc
     }
-    [SerializeField] private HeroClass heroClass = HeroClass.Warrior;
-    [SerializeField, Min(1)] private int roundLimit = 10;
 
     private Unit hero;
     private Unit enemy;
@@ -74,7 +74,7 @@ public class Arena : MonoBehaviour
             enemy.TakeDamage(heroDamage);
 
             string roundLog =
-                $"Раунд {round}: {hero.UnitName} наносит {heroDamage}, " +
+                $"Раунд {round}: {hero.UnitName} наносит {heroDamage} Урона, " +
                 $"у противника {enemy.Health} HP";
 
             
