@@ -37,11 +37,10 @@ public class Inventory : MonoBehaviour
         inventory.Print();
         
     }
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.X))
-            inventory.RemoveItem("Стрела", 2);
-        inventory.Print();
-    }
+            inventory.Print();
+    }*/
 }
 

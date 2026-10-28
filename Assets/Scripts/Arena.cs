@@ -70,28 +70,26 @@ public class Arena : MonoBehaviour
             if (!hero.IsAlive || !enemy.IsAlive)
                 break;
 
-            var heroAttack = heroDamageCalculator.CalculateDamage();
-            enemy.TakeDamage(heroAttack.Damage);
+            int heroDamage = hero.Attack();
+            enemy.TakeDamage(heroDamage);
 
             string roundLog =
-                $"Раунд {round}: {hero.UnitName} наносит {heroDamage} Урона, " +
+                $"Раунд {round}: {hero.UnitName} наносит {heroDamage}, " +
                 $"у противника {enemy.Health} HP";
 
             
             if (enemy.IsAlive)
             {
-                var enemyAttack = enemyDamageCalculator.CalculateDamage();
-                hero.TakeDamage(enemyAttack.Damage);
+                int enemyDamage = enemy.Attack();
+                hero.TakeDamage(enemyDamage);
 
-                roundLog +=
-                    $"; {enemy.UnitName} наносит {enemyAttack.Damage} урона " +
-                    $"({enemyAttack.ElementModifier}, {enemyAttack.CriticalModifier}), " +
-                    $"у героя {hero.Health} HP";
+                roundLog += $"; {enemy.UnitName} наносит {enemyDamage}, " +
+                            $"у героя {hero.Health} HP";
             }
 
             Debug.Log(roundLog);
         }
-
+        
         LogResult();
     }
 
