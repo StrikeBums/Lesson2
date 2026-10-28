@@ -4,6 +4,10 @@ public class Arena : MonoBehaviour
 {
     [SerializeField] private HeroClass heroClass = HeroClass.Warrior;
     [SerializeField, Min(1)] private int roundLimit = 10;
+    
+    [Header("Damage Calculators")]
+    [SerializeField] private DamageCalculator heroDamageCalculator;
+    [SerializeField] private DamageCalculator enemyDamageCalculator;
     public enum HeroClass
     {
         Warrior,
@@ -70,21 +74,24 @@ public class Arena : MonoBehaviour
             if (!hero.IsAlive || !enemy.IsAlive)
                 break;
 
-            int heroDamage = hero.Attack();
-            enemy.TakeDamage(heroDamage);
+            var heroAttack = heroDamageCalculator.CalculateDamage();
+            enemy.TakeDamage(heroAttack.Damage);
 
             string roundLog =
-                $"Раунд {round}: {hero.UnitName} наносит {heroDamage} Урона, " +
+                $"Раунд {round}: {hero.UnitName} наносит {heroAttack.Damage} урона " +
+                $"({heroAttack.ElementModifier}, {heroAttack.CriticalModifier}), " +
                 $"у противника {enemy.Health} HP";
 
             
             if (enemy.IsAlive)
             {
-                int enemyDamage = enemy.Attack();
-                hero.TakeDamage(enemyDamage);
+                var enemyAttack = enemyDamageCalculator.CalculateDamage();
+                hero.TakeDamage(enemyAttack.Damage);
 
-                roundLog += $"; {enemy.UnitName} наносит {enemyDamage}, " +
-                            $"у героя {hero.Health} HP";
+                roundLog +=
+                    $"; {enemy.UnitName} наносит {enemyAttack.Damage} урона " +
+                    $"({enemyAttack.ElementModifier}, {enemyAttack.CriticalModifier}), " +
+                    $"у героя {hero.Health} HP";
             }
 
             Debug.Log(roundLog);

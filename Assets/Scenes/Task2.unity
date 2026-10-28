@@ -169,7 +169,6 @@ MonoBehaviour:
     count: 1
   - item: "\u041A\u043D\u0438\u0433\u0430"
     count: 1
-  currentItems: []
 --- !u!4 &348890661
 Transform:
   m_ObjectHideFlags: 0
