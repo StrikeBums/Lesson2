@@ -10,7 +10,6 @@ public class InventoryItem
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private List<InventoryItem> startItems = new();
-    [SerializeField] private List<InventoryItem> currentItems = new();
 
     private InventoryEngine inventory;
 
@@ -26,17 +25,23 @@ public class Inventory : MonoBehaviour
 
         inventory = new InventoryEngine(startItems);
         
-        /*inventory.AddItem("Зелье", 5);
+        
+        inventory.AddItem("Зелье", 5);
         inventory.AddItem("Щит" );
-        inventory.RemoveItem("Меч", 1 );
+        inventory.AddItem("Гримуар", 3);
+        inventory.RemoveItem("Меч" );
         inventory.RemoveItem("Лук", 2);
-        inventory.RemoveItem("Стрела", 2);*/
+        inventory.RemoveItem("Стрела", 2);
+        inventory.RemoveItem("Полено", 2);
         
         inventory.Print();
+        
     }
     private void FixedUpdate()
     {
-        currentItems = inventory.GetItems();
+        if (Input.GetKeyDown(KeyCode.X))
+            inventory.RemoveItem("Стрела", 2);
+        inventory.Print();
     }
 }
 

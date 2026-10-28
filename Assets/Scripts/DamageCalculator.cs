@@ -1,12 +1,19 @@
 using UnityEngine;
 
 public class DamageCalculator : MonoBehaviour
-{
+{ 
+    public struct AttackResult
+    {
+        public int Damage;
+        public string ElementModifier;
+        public string CriticalModifier;
+    }
     public enum Element
     {
         None,
         Fire,
         Ice
+        
     }
     [Header("Weapon")]
     [SerializeField] private int baseDamage = 10;
@@ -39,7 +46,7 @@ public class DamageCalculator : MonoBehaviour
         }
     }
 
-    private AttackResult CalculateDamage()
+    public AttackResult CalculateDamage()
     {
         var result = new AttackResult();
 
@@ -88,11 +95,6 @@ public class DamageCalculator : MonoBehaviour
                (first == Element.Ice && second == Element.Fire);
     }
 
-    private struct AttackResult
-    {
-        public int Damage;
-        public string ElementModifier;
-        public string CriticalModifier;
-    }
+   
 }
 
