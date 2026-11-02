@@ -4,29 +4,17 @@ public class Arena : MonoBehaviour
 {
     [SerializeField] private HeroClass heroClass = HeroClass.Warrior;
     [SerializeField, Min(1)] private int roundLimit = 10;
-    public enum HeroClass
-    {
-        Warrior,
-        Mage
-    }
-
-    private enum EnemyType
-    {
-        Goblin,
-        Troll,
-        Orc
-    }
-
-    private Unit hero;
-    private Unit enemy;
+    
+    private Unit m_hero;
+    private Unit m_enemy;
 
     private void Awake()
     {
-        hero = CreateHero(heroClass);
-        enemy = CreateRandomEnemy();
+        m_hero = CreateHero(heroClass);
+        m_enemy = CreateRandomEnemy();
 
-        Debug.Log($"{hero.UnitName} ({hero.Health} HP) против " +
-                  $"{enemy.UnitName} ({enemy.Health} HP)");
+        Debug.Log($"{m_hero.unitName} ({m_hero.health} HP) против " +
+                  $"{m_enemy.unitName} ({m_enemy.health} HP)");
     }
 
     private void Start()
@@ -47,15 +35,15 @@ public class Arena : MonoBehaviour
 
     private Unit CreateRandomEnemy()
     {
-        EnemyType type = (EnemyType)Random.Range(
-            0, System.Enum.GetValues(typeof(EnemyType)).Length);
+        EnemyClass type = (EnemyClass)Random.Range(
+            0, System.Enum.GetValues(typeof(EnemyClass)).Length);
 
         switch (type)
         {
-            case EnemyType.Goblin:
+            case EnemyClass.Goblin:
                 return new Unit("Гоблин", 50, 4, 8);
 
-            case EnemyType.Orc:
+            case EnemyClass.Orc:
                 return new Unit("Орк", 80, 5, 10);
 
             default:
@@ -67,24 +55,24 @@ public class Arena : MonoBehaviour
     {
         for (int round = 1; round <= roundLimit; round++)
         {
-            if (!hero.IsAlive || !enemy.IsAlive)
+            if (!m_hero.IsAlive || !m_enemy.IsAlive)
                 break;
 
-            int heroDamage = hero.Attack();
-            enemy.TakeDamage(heroDamage);
+            int heroDamage = m_hero.Attack();
+            m_enemy.TakeDamage(heroDamage);
 
             string roundLog =
-                $"Раунд {round}: {hero.UnitName} наносит {heroDamage}, " +
-                $"у противника {enemy.Health} HP";
+                $"Раунд {round}: {m_hero.unitName} наносит {heroDamage}, " +
+                $"у противника {m_enemy.health} HP";
 
             
-            if (enemy.IsAlive)
+            if (m_enemy.IsAlive)
             {
-                int enemyDamage = enemy.Attack();
-                hero.TakeDamage(enemyDamage);
+                int enemyDamage = m_enemy.Attack();
+                m_hero.TakeDamage(enemyDamage);
 
-                roundLog += $"; {enemy.UnitName} наносит {enemyDamage}, " +
-                            $"у героя {hero.Health} HP";
+                roundLog += $"; {m_enemy.unitName} наносит {enemyDamage}, " +
+                            $"у героя {m_hero.health} HP";
             }
 
             Debug.Log(roundLog);
@@ -95,11 +83,11 @@ public class Arena : MonoBehaviour
 
     private void LogResult()
     {
-        if (hero.IsAlive && !enemy.IsAlive)
+        if (m_hero.IsAlive && !m_enemy.IsAlive)
         {
-            Debug.Log($"Победа! У героя осталось {hero.Health} HP");
+            Debug.Log($"Победа! У героя осталось {m_hero.health} HP");
         }
-        else if (!hero.IsAlive && enemy.IsAlive)
+        else if (!m_hero.IsAlive && m_enemy.IsAlive)
         {
             Debug.Log("Поражение!");
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class InventoryItem
@@ -9,38 +10,33 @@ public class InventoryItem
 }
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private List<InventoryItem> startItems = new();
+    [SerializeField] private List<InventoryItem> m_startItems = new();
 
-    private InventoryEngine inventory;
+    private InventoryEngine m_inventory;
 
     private void Start()
     {
-        if (startItems.Count == 0)
+        if (m_startItems.Count == 0)
         {
-            startItems = new List<InventoryItem>
+            m_startItems = new List<InventoryItem>
             {
                 new InventoryItem {item = "Меч", count = 1},
             };
         }
 
-        inventory = new InventoryEngine(startItems);
+        m_inventory = new InventoryEngine(m_startItems);
         
         
-        inventory.AddItem("Зелье", 5);
-        inventory.AddItem("Щит" );
-        inventory.AddItem("Гримуар", 3);
-        inventory.RemoveItem("Меч" );
-        inventory.RemoveItem("Лук", 2);
-        inventory.RemoveItem("Стрела", 2);
-        inventory.RemoveItem("Полено", 2);
+        m_inventory.AddItem("Зелье", 5);
+        m_inventory.AddItem("Щит" );
+        m_inventory.AddItem("Гримуар", 3);
+        m_inventory.RemoveItem("Меч" );
+        m_inventory.RemoveItem("Лук", 2);
+        m_inventory.RemoveItem("Стрела", 2);
+        m_inventory.RemoveItem("Полено", 2);
         
-        inventory.Print();
+        m_inventory.Print();
         
     }
-    /*private void FixedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-            inventory.Print();
-    }*/
 }
 

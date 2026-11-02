@@ -4,31 +4,69 @@ public class DamageCalculator : MonoBehaviour
 { 
     public struct AttackResult
     {
-        public int Damage;
-        public string ElementModifier;
-        public string CriticalModifier;
+        public int damage;
+        public string elementModifier;
+        public string criticalModifier;
     }
-    public enum Element
-    {
-        None,
-        Fire,
-        Ice
-        
-    }
+    
     [Header("Weapon")]
-    [SerializeField] private int baseDamage = 10;
-    [SerializeField] private Element weaponElement = Element.None;
-
+    [SerializeField] private int m_baseDamage = 10;
+    [SerializeField] private ElementModifier m_weaponElement = ElementModifier.None;
+    
     [Range(0f, 1f)]
-    [SerializeField] private float criticalChance = 0.1f;
-
+    [SerializeField] private float m_criticalChance = 0.1f;
+    
     [Header("Target")]
-    [SerializeField] private int armor = 3;
-    [SerializeField] private Element targetElement = Element.Ice;
-
+    [SerializeField] private int m_armor = 3;
+     [SerializeField] private ElementModifier m_targetElement = ElementModifier.Ice;
+    
     [Header("Test")]
-    [SerializeField] private int attacksCount = 3;
+    [SerializeField] private int m_attacksCount = 3;
 
+    public AttackResult CalculateDamage()
+    {
+        
+        var result = new AttackResult();
+
+        
+        int damage = Mathf.Max(1, m_baseDamage - m_armor);
+
+        result.elementModifier = "без стихии";
+
+        
+        if (m_weaponElement != ElementModifier.None &&
+            m_targetElement != ElementModifier.None)
+            
+        {
+            if (m_weaponElement == m_targetElement)
+            {
+                damage = 0;
+                result.elementModifier = "стихии совпадают";
+            }
+            else if (AreOppositeElements(m_weaponElement, m_targetElement))
+            {
+                damage = Mathf.FloorToInt(damage * 1.5f);
+                result.elementModifier = "стихия ×1,5";
+            }
+        }
+
+        
+        var isCritical = Random.value < m_criticalChance;
+
+        if (damage > 0 && isCritical)
+        {
+            damage *= 2;
+            result.criticalModifier = "крит ×2";
+        }
+        else
+        {
+            result.criticalModifier = "без крита";
+        }
+
+        result.damage = damage;
+
+        return result;
+    }
     private void Start()
     {
         CalculateAttacks();
@@ -36,65 +74,19 @@ public class DamageCalculator : MonoBehaviour
     [ContextMenu("Calculate Attacks")]
     private void CalculateAttacks()
     {
-        for (int i = 1; i <= attacksCount; i++)
+        for (var i = 1; i <= m_attacksCount; i++)
         {
-            AttackResult result = CalculateDamage();
+            var result = CalculateDamage();
 
             Debug.Log(
-                $"Удар {i}: {result.Damage} урона " +
-                $"({result.ElementModifier}, {result.CriticalModifier})");
+                $"Удар {i}: {result.damage} урона " +
+                $"({result.elementModifier}, {result.criticalModifier})");
         }
     }
-
-    public AttackResult CalculateDamage()
+    private bool AreOppositeElements(ElementModifier first, ElementModifier second)
     {
-        var result = new AttackResult();
-
-        
-        int damage = Mathf.Max(1, baseDamage - armor);
-
-        result.ElementModifier = "без стихии";
-
-        
-        if (weaponElement != Element.None &&
-            targetElement != Element.None)
-        {
-            if (weaponElement == targetElement)
-            {
-                damage = 0;
-                result.ElementModifier = "стихии совпадают";
-            }
-            else if (AreOppositeElements(weaponElement, targetElement))
-            {
-                damage = Mathf.FloorToInt(damage * 1.5f);
-                result.ElementModifier = "стихия ×1,5";
-            }
-        }
-
-        
-        bool isCritical = Random.value < criticalChance;
-
-        if (damage > 0 && isCritical)
-        {
-            damage *= 2;
-            result.CriticalModifier = "крит ×2";
-        }
-        else
-        {
-            result.CriticalModifier = "без крита";
-        }
-
-        result.Damage = damage;
-
-        return result;
+        return (first == ElementModifier.Fire && second == ElementModifier.Ice) ||
+               (first == ElementModifier.Ice && second == ElementModifier.Fire);
     }
-
-    private bool AreOppositeElements(Element first, Element second)
-    {
-        return (first == Element.Fire && second == Element.Ice) ||
-               (first == Element.Ice && second == Element.Fire);
-    }
-
-   
 }
 

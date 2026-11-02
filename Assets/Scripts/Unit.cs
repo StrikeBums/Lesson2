@@ -2,29 +2,29 @@ using UnityEngine;
 
 public class Unit
 {
-    public string UnitName { get; }
-    public int Health { get; private set; }
+    public string unitName { get; }
+    public int health { get; private set; }
 
-    public int MinDamage { get; }
-    public int MaxDamage { get; }
+    private int m_minDamage { get; }
+    private int m_maxDamage { get; }
 
-    public bool IsAlive => Health > 0;
+    public bool IsAlive => health > 0;
 
     public Unit(string unitName, int health, int minDamage, int maxDamage)
     {
-        UnitName = unitName;
-        Health = health;
-        MinDamage = minDamage;
-        MaxDamage = maxDamage;
+        this.unitName = unitName;
+        this.health = health;
+        m_minDamage = minDamage;
+        m_maxDamage = maxDamage;
     }
 
     public int Attack()
     {
-        return Random.Range(MinDamage, MaxDamage + 1);
+        return Random.Range(m_minDamage, m_maxDamage + 1);
     }
 
     public void TakeDamage(int damage)
     {
-        Health = Mathf.Max(0, Health - damage);
+        health = Mathf.Max(0, health - damage);
     }
 }

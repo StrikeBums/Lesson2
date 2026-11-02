@@ -5,7 +5,7 @@ public class InventoryEngine
 {
     private const int MaxUniqueItems = 10;
 
-    private Dictionary<string, int> items = new Dictionary<string, int>();
+    private Dictionary<string, int> m_items = new Dictionary<string, int>();
 
     public InventoryEngine(List<InventoryItem> startItems)
     {
@@ -15,15 +15,6 @@ public class InventoryEngine
         }
     }
 
-    public InventoryEngine(Dictionary<string, int> startItems)
-    {
-        foreach (var pair in startItems)
-        {
-            AddItem(pair.Key, pair.Value);
-        }
-    }
-    
-
     public void AddItem(string item, int count = 1)
     {
         if (count <= 0)
@@ -32,20 +23,20 @@ public class InventoryEngine
             return;
         }
 
-        if (items.ContainsKey(item))
+        if (m_items.ContainsKey(item))
         {
-            items[item] += count;
+            m_items[item] += count;
         }
         else
         {
-            if (items.Count >= MaxUniqueItems)
+            if (m_items.Count >= MaxUniqueItems)
             {
                 Debug.LogWarning(
-                    $"Нет места для \"{item}\": занято {items.Count} из {MaxUniqueItems}");
+                    $"Нет места для \"{item}\": занято {m_items.Count} из {MaxUniqueItems}");
                 return;
             }
 
-            items.Add(item, count);
+            m_items.Add(item, count);
         }
 
         Debug.Log($"Добавлено: {item} × {count}");
@@ -59,25 +50,25 @@ public class InventoryEngine
             return;
         }
 
-        if (!items.ContainsKey(item))
+        if (!m_items.ContainsKey(item))
         {
             Debug.LogWarning($"Нельзя убрать \"{item}\": его нет в инвентаре");
             return;
         }
 
-        if (items[item] < count)
+        if (m_items[item] < count)
         {
-            Debug.LogWarning($"Нельзя убрать \"{item}\" × {count}: имеется только {items[item]}");
+            Debug.LogWarning($"Нельзя убрать \"{item}\" × {count}: имеется только {m_items[item]}");
             return;
         }
 
-        items[item] -= count;
+        m_items[item] -= count;
 
         Debug.Log($"Удалено: {item} × {count}");
 
-        if (items[item] == 0)
+        if (m_items[item] == 0)
         {
-            items.Remove(item);
+            m_items.Remove(item);
             Debug.Log($"Предмет \"{item}\" полностью удалён из инвентаря");
         }
     }
@@ -85,7 +76,7 @@ public class InventoryEngine
     {
         var result = new List<InventoryItem>();
 
-        foreach (var entry in items)
+        foreach (var entry in m_items)
             result.Add(new InventoryItem { item = entry.Key, count = entry.Value });
 
         return result;
@@ -97,15 +88,15 @@ public class InventoryEngine
 
         int totalCount = 0;
 
-        foreach (var pair in items)
+        foreach (var pair in m_items)
         {
             Debug.Log($"{pair.Key} × {pair.Value}");
             totalCount += pair.Value;
         }
         Debug.Log("============");
         
-        Debug.Log($"Кол-во уникальных предметов: {items.Count}, общее кол-во: {totalCount}");
+        Debug.Log($"Кол-во уникальных предметов: {m_items.Count}, общее кол-во: {totalCount}");
 
-        Debug.Log($"Занято ячеек: {items.Count} из {MaxUniqueItems}");
+        Debug.Log($"Занято ячеек: {m_items.Count} из {MaxUniqueItems}");
     }
 }

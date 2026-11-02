@@ -461,12 +461,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2776dabe62bcad04281129fbfb6c342b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageCalculator
-  baseDamage: 10
-  weaponElement: 1
-  criticalChance: 0.47
-  armor: 3
-  targetElement: 2
-  attacksCount: 3
+  m_baseDamage: 10
+  m_weaponElement: 1
+  m_criticalChance: 0.1
+  m_armor: 3
+  m_targetElement: 2
+  m_attacksCount: 3
 --- !u!4 &1552938053
 Transform:
   m_ObjectHideFlags: 0
