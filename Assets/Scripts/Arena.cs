@@ -55,7 +55,7 @@ public class Arena : MonoBehaviour
     {
         for (int round = 1; round <= roundLimit; round++)
         {
-            if (!m_hero.IsAlive || !m_enemy.IsAlive)
+            if (!m_hero.isAlive || !m_enemy.isAlive)
                 break;
 
             int heroDamage = m_hero.Attack();
@@ -66,7 +66,7 @@ public class Arena : MonoBehaviour
                 $"у противника {m_enemy.health} HP";
 
             
-            if (m_enemy.IsAlive)
+            if (m_enemy.isAlive)
             {
                 int enemyDamage = m_enemy.Attack();
                 m_hero.TakeDamage(enemyDamage);
@@ -83,11 +83,11 @@ public class Arena : MonoBehaviour
 
     private void LogResult()
     {
-        if (m_hero.IsAlive && !m_enemy.IsAlive)
+        if (m_hero.isAlive && !m_enemy.isAlive)
         {
             Debug.Log($"Победа! У героя осталось {m_hero.health} HP");
         }
-        else if (!m_hero.IsAlive && m_enemy.IsAlive)
+        else if (!m_hero.isAlive && m_enemy.isAlive)
         {
             Debug.Log("Поражение!");
         }

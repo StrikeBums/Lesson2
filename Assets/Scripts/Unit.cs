@@ -5,22 +5,22 @@ public class Unit
     public string unitName { get; }
     public int health { get; private set; }
 
-    private int m_minDamage { get; }
-    private int m_maxDamage { get; }
+    private int minDamage { get; }
+    private int maxDamage { get; }
 
-    public bool IsAlive => health > 0;
+    public bool isAlive => health > 0;
 
     public Unit(string unitName, int health, int minDamage, int maxDamage)
     {
         this.unitName = unitName;
         this.health = health;
-        m_minDamage = minDamage;
-        m_maxDamage = maxDamage;
+        this.minDamage = minDamage;
+        this.maxDamage = maxDamage;
     }
 
     public int Attack()
     {
-        return Random.Range(m_minDamage, m_maxDamage + 1);
+        return Random.Range(minDamage, maxDamage + 1);
     }
 
     public void TakeDamage(int damage)
