@@ -1,16 +1,17 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Arena : MonoBehaviour
 {
-    [SerializeField] private HeroClass heroClass = HeroClass.Warrior;
-    [SerializeField, Min(1)] private int roundLimit = 10;
+    [SerializeField] private HeroClass m_heroClass = HeroClass.Warrior;
+    [SerializeField, Min(1)] private int m_roundLimit = 10;
     
     private Unit m_hero;
     private Unit m_enemy;
 
     private void Awake()
     {
-        m_hero = CreateHero(heroClass);
+        m_hero = CreateHero(m_heroClass);
         m_enemy = CreateRandomEnemy();
 
         Debug.Log($"{m_hero.unitName} ({m_hero.health} HP) против " +
@@ -53,18 +54,18 @@ public class Arena : MonoBehaviour
 
     private void StartBattle()
     {
-        for (int round = 1; round <= roundLimit; round++)
+        for (int round = 1; round <= m_roundLimit; round++)
         {
-            if (!m_hero.isAlive || !m_enemy.isAlive)
-                break;
-
+            {
+                if (!m_hero.isAlive || !m_enemy.isAlive)
+                    break;
+            }
             int heroDamage = m_hero.Attack();
             m_enemy.TakeDamage(heroDamage);
 
             string roundLog =
                 $"Раунд {round}: {m_hero.unitName} наносит {heroDamage}, " +
                 $"у противника {m_enemy.health} HP";
-
             
             if (m_enemy.isAlive)
             {
