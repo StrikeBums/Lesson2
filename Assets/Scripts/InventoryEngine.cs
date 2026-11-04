@@ -4,7 +4,7 @@ using UnityEngine;
 public class InventoryEngine
 {
     private const int MaxUniqueItems = 10;
-
+    private const int MaxStackItems = 10;
     private Dictionary<string, int> m_items = new Dictionary<string, int>();
 
     public InventoryEngine(List<InventoryItem> startItems)
@@ -25,6 +25,14 @@ public class InventoryEngine
 
         if (m_items.ContainsKey(item))
         {
+           if (m_items[item] + count > MaxStackItems)
+            {
+                Debug.LogWarning(
+                $"Нельзя добавить {count} {item}: в ячейке уже {m_items[item]}, максимум {MaxStackItems}");
+            return;
+            
+            }
+           
             m_items[item] += count;
         }
         else
@@ -33,6 +41,13 @@ public class InventoryEngine
             {
                 Debug.LogWarning(
                     $"Нет места для \"{item}\": занято {m_items.Count} из {MaxUniqueItems}");
+                return;
+            }
+            
+            if (count > MaxStackItems)
+            {
+                Debug.LogWarning(
+                    $"Нельзя создать ячейку {item} размером {count}: максимум {MaxStackItems}");
                 return;
             }
 
