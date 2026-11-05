@@ -40,7 +40,6 @@ namespace Assets.Scripts.InventorySystem
             m_inventory.AddItem("Ключ", 9);
 
             m_inventory.Print();
-
         }
     }
 }

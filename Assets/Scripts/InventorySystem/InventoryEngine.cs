@@ -17,12 +17,12 @@ namespace Assets.Scripts.InventorySystem
             }
         }
 
-        public void AddItem(string item, int count = 1)
+        public bool AddItem(string item, int count = 1)
         {
             if (count <= 0)
             {
                 Debug.LogWarning($"Нельзя добавить отрицательное или нулевое количество предмета \"{item}\"");
-                return;
+                return false;
             }
 
             if (m_items.ContainsKey(item))
@@ -31,7 +31,7 @@ namespace Assets.Scripts.InventorySystem
                 {
                     Debug.LogWarning(
                         $"Нельзя добавить {count} {item}: в ячейке уже {m_items[item]}, максимум {MaxStackItems}");
-                    return;
+                    return false;
 
                 }
 
@@ -43,40 +43,41 @@ namespace Assets.Scripts.InventorySystem
                 {
                     Debug.LogWarning(
                         $"Нет места для \"{item}\": занято {m_items.Count} из {MaxUniqueItems}");
-                    return;
+                    return false;
                 }
 
                 if (count > MaxStackItems)
                 {
                     Debug.LogWarning(
                         $"Нельзя создать ячейку {item} размером {count}: максимум {MaxStackItems}");
-                    return;
+                    return false;
                 }
 
                 m_items.Add(item, count);
             }
 
             Debug.Log($"Добавлено: {item} × {count}");
+            return true;
         }
 
-        public void RemoveItem(string item, int count = 1)
+        public bool RemoveItem(string item, int count = 1)
         {
             if (count <= 0)
             {
                 Debug.LogWarning($"Некорректное количество для удаления: {count}");
-                return;
+                return false;
             }
 
             if (!m_items.ContainsKey(item))
             {
                 Debug.LogWarning($"Нельзя убрать \"{item}\": его нет в инвентаре");
-                return;
+                return false;
             }
 
             if (m_items[item] < count)
             {
                 Debug.LogWarning($"Нельзя убрать \"{item}\" × {count}: имеется только {m_items[item]}");
-                return;
+                return false;
             }
 
             m_items[item] -= count;
@@ -86,9 +87,12 @@ namespace Assets.Scripts.InventorySystem
             if (m_items[item] == 0)
             {
                 m_items.Remove(item);
+                
                 Debug.Log($"Предмет \"{item}\" полностью удалён из инвентаря");
             }
+            return true;
         }
+        
 
         public List<InventoryItem> GetItems()
         {
