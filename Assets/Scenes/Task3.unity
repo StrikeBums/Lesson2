@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f93c12cd8a563478101fd4b0112d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Arena
-  heroClass: 1
+  heroClass: 0
   roundLimit: 10
 --- !u!4 &693181337
 Transform:
